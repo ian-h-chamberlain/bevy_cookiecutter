@@ -56,7 +56,7 @@ jobs:
 
       - name: Prepare root directory
         shell: bash
-        # Remove all files and folder exepct .git/ and cookiecutter-temp/
+        # Remove all files and folder except .git/ and cookiecutter-temp/
         run: |
           find ./ -maxdepth 1 \
           ! -name '.git' \
