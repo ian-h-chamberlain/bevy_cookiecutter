@@ -1,5 +1,5 @@
 [workspace]
-members = ["game_plugin"]
+members = [".", "game_plugin"]
 
 [package]
 name = "{{ cookiecutter.crate_name }}"
