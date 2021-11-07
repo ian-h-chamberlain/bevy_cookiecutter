@@ -9,8 +9,9 @@ env:
   GAME_EXECUTABLE_NAME: {{ cookiecutter.crate_name }}
   GAME_OSX_APP_NAME: {{ cookiecutter.project_name }}
 
+{% raw -%}
 jobs:
-  build-macOS:
+  build-macos:
     runs-on: macos-latest
 
     steps:
@@ -179,3 +180,4 @@ jobs:
           asset_name: ${{ env.GAME_EXECUTABLE_NAME }}_${{ steps.tag.outputs.tag }}_web.zip
           tag: ${{ github.ref }}
           overwrite: true
+{% endraw %}
