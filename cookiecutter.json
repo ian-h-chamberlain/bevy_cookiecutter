@@ -8,7 +8,9 @@
   "osx_bundle_id": "com.example.{{ cookiecutter.osx_short_name }}",
 
   "_copy_without_render": [
-    "{{cookiecutter.crate_name}}/assets/*"
+    "{{cookiecutter.crate_name}}/assets/*",
+    "{{cookiecutter.crate_name}}/.github/workflows/ci.yml",
+    "{{cookiecutter.crate_name}}/.github/workflows/deploy-page.yml"
   ],
   "_extensions": [
     "cookiecutter.extensions.SlugifyExtension"
