@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          # Comminting workflow files using the regular GITHUB_TOKEN will fail with
+          # Committing workflow files using the regular GITHUB_TOKEN will fail with
           # `Git Error: Refusing to allow a GitHub App to create or update workflow without workflows permission`.
           # This is by design to prevent third-parties from adding malicious workflow files.
           #
