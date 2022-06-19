@@ -23,9 +23,9 @@ enum GameState {
     // During the loading State the LoadingPlugin will load our assets
     #[default]
     Loading,
-    // During this State the actual game logic is executed
+    /// During this State the actual game logic is executed
     Playing,
-    // Here the menu is drawn and waiting for player interaction
+    /// Here the menu is drawn and waiting for player interaction
     Menu,
 }
 
