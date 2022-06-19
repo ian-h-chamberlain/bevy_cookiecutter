@@ -1,3 +1,6 @@
+[workspace]
+members = ["game_plugin"]
+
 [package]
 name = "{{ cookiecutter.crate_name }}"
 version = "0.1.0"

@@ -3,10 +3,10 @@
 Template for a Game using the awesome [Bevy engine][bevy] featuring out of the box builds for Windows, Linux, macOS, and Web (Wasm).
 
 _Since Bevy is in heavy development, there regularly are unpublished new features or bug fixes. If you like living on the edge, you can use the branch `bevy_main` of this template to be close to the current state of Bevy's main branch_
- 
+
 # What does this template give you?
 * small example ["game"](https://niklasei.github.io/bevy_game_template/) (*warning: biased; e.g., split into a lot of plugins and using `bevy_kira_audio` for sound*)
-* easy setup for running the web build using [trunk] (`trunk serve`) 
+* easy setup for running the web build using [trunk] (`trunk serve`)
 * run the native version with `cargo run`
 * workflow for GitHub actions creating releases for Windows, Linux, macOS, and Web (Wasm) ready for distribution
     * push a tag in the form of `v[0-9]+.[0-9]+.[0-9]+*` (e.g. `v1.1.42`) to trigger the flow
@@ -14,9 +14,12 @@ _Since Bevy is in heavy development, there regularly are unpublished new feature
 
 # How to use this template?
  1. Click "Use this template" on the repository's page
- 2. Look for `ToDo` to use your own game name everywhere
- 3. [Update the icons as described below](#updating-the-icons)
- 4. Start coding :tada:
+ 1. Finish repository setup from the template (see the [related blog article](https://stefanbuck.com/blog/repository-templates-meets-github-actions) for more details):
+    1. Create (or use an existing) a Github [personal access token](https://github.com/settings/tokens) with the `workflow` scope
+    1. Create a repository secret with the name `REPO_SETUP_TOKEN` using the new access token on the repository
+    1. Edit [`cookiecutter.json`](cookiecutter.json) as described in [this repo](https://github.com/stefanbuck/cookiecutter-template/)
+ 1. [Update the icons as described below](#updating-the-icons)
+ 1. Start coding :tada:
     * Start the native app: `cargo run`
     * Start the web build: `trunk serve`
        * requires [trunk]: `cargo install --locked trunk`
