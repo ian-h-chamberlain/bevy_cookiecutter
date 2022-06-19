@@ -3,7 +3,8 @@
 
 use bevy::prelude::{App, ClearColor, Color, Msaa, WindowDescriptor};
 use bevy::DefaultPlugins;
-use bevy_game::GamePlugin;
+
+use {{ cookiecutter.crate_name | replace('-', '_') }}::GamePlugin;
 
 fn main() {
     App::new()
