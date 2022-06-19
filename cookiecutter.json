@@ -2,12 +2,15 @@
   "project_name": "Bevy Game",
   "author_name": "Your Name",
   "author_email": "your_email@example.com",
-  "osx_bundle_id": "com.example.{{ cookiecutter.crate_name }}",
 
-  "crate_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
-  "osx_short_name": "{{ cookiecutter.project_name.replace(' ', '') }}",
+  "crate_name": "{{ cookiecutter.project_name | slugify }}",
+  "osx_short_name": "{{ cookiecutter.project_name | slugify | replace('-', '') }}",
+  "osx_bundle_id": "com.example.{{ cookiecutter.osx_short_name }}",
 
   "_copy_without_render": [
     "{{cookiecutter.crate_name}}/assets/*"
+  ],
+  "_extensions": [
+    "cookiecutter.extensions.SlugifyExtension"
   ]
 }
