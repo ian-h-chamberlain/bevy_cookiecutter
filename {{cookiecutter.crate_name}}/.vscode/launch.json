@@ -18,13 +18,13 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=bevy_game",
-                    "--package=bevy_game",
+                    "--bin={{ cookiecutter.crate_name }}",
+                    "--package={{ cookiecutter.crate_name }}",
                     "--features",
                     "dev"
                 ],
                 "filter": {
-                    "name": "bevy_game",
+                    "name": "{{ cookiecutter.crate_name }}",
                     "kind": "bin"
                 },
             },
@@ -47,13 +47,13 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=bevy_game",
-                    "--package=bevy_game",
+                    "--bin={{ cookiecutter.crate_name }}",
+                    "--package={{ cookiecutter.crate_name }}",
                     "--features",
                     "dev"
                 ],
                 "filter": {
-                    "name": "bevy_game",
+                    "name": "{{ cookiecutter.crate_name }}",
                     "kind": "bin"
                 }
             },
