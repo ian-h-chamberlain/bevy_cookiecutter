@@ -12,7 +12,7 @@ env:
 
 jobs:
   build-macOS:
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
       - name: Get tag

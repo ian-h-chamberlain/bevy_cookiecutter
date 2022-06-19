@@ -20,11 +20,11 @@ use bevy::prelude::*;
 // Or https://github.com/bevyengine/bevy/blob/main/examples/ecs/state.rs
 #[derive(Clone, Eq, PartialEq, Debug, Hash)]
 enum GameState {
-    // During the loading State the LoadingPlugin will load our assets
+    /// During the loading State the LoadingPlugin will load our assets
     Loading,
-    // During this State the actual game logic is executed
+    /// During this State the actual game logic is executed
     Playing,
-    // Here the menu is drawn and waiting for player interaction
+    /// Here the menu is drawn and waiting for player interaction
     Menu,
 }
 
