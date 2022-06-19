@@ -1,0 +1,8 @@
+{
+  "project_name": "Bevy Game",
+  "author_name": "Your Name",
+  "author_email": "your_email@example.com",
+  "crate_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "osx_short_name": "{{ cookiecutter.project_name.replace(' ', '') }}",
+  "osx_bundle_id": "com.example.{{ cookiecutter.crate_name }}"
+}

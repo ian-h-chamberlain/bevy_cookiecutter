@@ -1,8 +1,8 @@
 [package]
-name = "bevy_game" # TODO
+name = "{{ cookiecutter.crate_name }}"
 version = "0.1.0"
 publish = false
-authors = []       # TODO
+authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
 edition = "2021"
 
 [profile.dev.package."*"]
