@@ -4,6 +4,7 @@ version = "0.1.0"
 publish = false
 authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
 edition = "2021"
+exclude = ["dist", "build", "assets", "credits"]
 
 [profile.dev.package."*"]
 opt-level = 3
@@ -16,26 +17,19 @@ lto = true
 codegen-units = 1
 
 [features]
-default = [
-  "bevy/bevy_winit",
-  "bevy/render",
-  "bevy/png",
-  "bevy/x11",
-  "bevy_kira_audio/ogg",
-]
-
 dev = [
-  "bevy/dynamic",
+    "bevy/dynamic",
 ]
 
 [dependencies]
-bevy = { version = "0.7", default-features = false }
-bevy_kira_audio = { version = "0.10" }
-bevy_asset_loader = { version = "0.11" }
-rand = "0.8.3"
+bevy = { version = "0.8", default-features = false, features = ["bevy_asset", "bevy_winit", "render", "png", "x11"] }
+bevy_kira_audio = { version = "0.12" }
+bevy_asset_loader = { version = "0.12" }
+rand = { version = "0.8.3" }
 
-[target.'cfg(target_os = "linux")'.dependencies]
-winit = { version = "0.25", features = ["x11"] }
+# keep the following in sync with Bevy's dependencies
+winit = { version = "0.26.0", default-features = false }
+image = { version = "0.24", default-features = false }
 
 [build-dependencies]
 embed-resource = "1.4"
