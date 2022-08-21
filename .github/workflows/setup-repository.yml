@@ -1,4 +1,4 @@
-# Copied from https://github.com/stefanbuck/cookiecutter-template
+# Copied from https://github.com/stefanbuck/instantiated-templatelate
 
 name: Setup repository
 on:
@@ -42,36 +42,29 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install cookiecutter
+        run: pip install cruft
 
       - name: Scaffolding repository
-        # cookiecutter is command-line utility to create projects from templates
-        # https://github.com/cookiecutter/cookiecutter
-        #
-        # --no-input      Do not prompt for parameters and only use
-        #                 cookiecutter.json file content
-        #
-        # --output-dir    Where to output the generated project dir into
-        run: cookiecutter . --no-input --output-dir ./cookiecutter-temp
+        run: cruft create . --no-input --output-dir ./instantiated-template
 
       - name: Prepare root directory
         shell: bash
-        # Remove all files and folder except .git/ and cookiecutter-temp/
+        # Remove all files and folder except .git/ and instantiated-template/
         run: |
           find ./ -maxdepth 1 \
           ! -name '.git' \
-          ! -name 'cookiecutter-temp' \
+          ! -name 'instantiated-template' \
           ! -name '.' \
           ! -exec rm -rf {} +
 
       - name: Move files to root
         shell: bash
-        # The cookiecutter-temp/ folder contains a single folder which is the
+        # The instantiated-template/ folder contains a single folder which is the
         # generated project by cookiecutter. We want to move all the project
         # files into the root directory so we can reinitialize git in the next step
         run: |
-          rsync -r ./cookiecutter-temp/*/ . && \
-          rm -rf ./cookiecutter-temp/
+          rsync -r ./instantiated-template/*/ . && \
+          rm -rf ./instantiated-template/
 
       - name: Reinitialize git repository
         shell: bash
