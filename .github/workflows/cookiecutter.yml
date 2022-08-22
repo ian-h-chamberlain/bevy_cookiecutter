@@ -20,8 +20,6 @@ jobs:
   setup:
     name: Reinitialize repository
     runs-on: ubuntu-latest
-    env:
-      REPO_SETUP_TOKEN: ${{ secrets.token }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -68,15 +66,3 @@ jobs:
           git add . && \
           git commit -m 'Initial commit' && \
           git push origin temp-branch:${{ inputs.branch_name }} -f
-
-      - name: Remove secret REPO_SETUP_TOKEN
-        # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
-        shell: bash
-        if: ${{ secrets.REPO_SETUP_TOKEN }}
-        run: |
-          curl \
-            -X DELETE --fail \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.REPO_SETUP_TOKEN }}" \
-            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
-
