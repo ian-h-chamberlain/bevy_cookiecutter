@@ -1,13 +1,12 @@
-# Copied from https://github.com/stefanbuck/instantiated-templatelate
-
 name: Setup repository
 on:
   push:
     paths:
       - cookiecutter.json
+
 jobs:
-  setup:
-    name: Reinitialize repository
+  require-non-template:
+    name: Check that the current repo is not the original template repo
     runs-on: ubuntu-latest
     env:
       REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
@@ -27,66 +26,10 @@ jobs:
             https://api.github.com/repos/$GITHUB_REPOSITORY \
             | jq --exit-status '.is_template == false';
 
-      - uses: actions/checkout@v2
-        with:
-          # Committing workflow files using the regular GITHUB_TOKEN will fail with
-          # `Git Error: Refusing to allow a GitHub App to create or update workflow without workflows permission`.
-          # This is by design to prevent third-parties from adding malicious workflow files.
-          #
-          # Generate a new personal access token with the workflow `scope` does the trick.
-          # Checkout my blog post https://stefanbuck.com/blog for alternative options
-          token: ${{ env.REPO_SETUP_TOKEN || secrets.GITHUB_TOKEN }}
-
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install dependencies
-        run: pip install cruft
-
-      - name: Scaffolding repository
-        run: cruft create . --no-input --output-dir ./instantiated-template
-
-      - name: Prepare root directory
-        shell: bash
-        # Remove all files and folder except .git/ and instantiated-template/
-        run: |
-          find ./ -maxdepth 1 \
-          ! -name '.git' \
-          ! -name 'instantiated-template' \
-          ! -name '.' \
-          ! -exec rm -rf {} +
-
-      - name: Move files to root
-        shell: bash
-        # The instantiated-template/ folder contains a single folder which is the
-        # generated project by cookiecutter. We want to move all the project
-        # files into the root directory so we can reinitialize git in the next step
-        run: |
-          rsync -r ./instantiated-template/*/ . && \
-          rm -rf ./instantiated-template/
-
-      - name: Reinitialize git repository
-        shell: bash
-        # Reinitialize git after scaffolding this repository.
-        # We use `git checkout --orphan` to create a branch in a git init-like state.
-        # By force pushing this as `main` we end up with a new clean git history.
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com" && \
-          git config --global user.name "github-actions[bot]" && \
-          git checkout --orphan temp-branch && \
-          git add . && \
-          git commit -m 'Initial commit' && \
-          git push origin temp-branch:main -f
-
-      - name: Remove secret REPO_SETUP_TOKEN
-        # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
-        shell: bash
-        if: ${{ env.REPO_SETUP_TOKEN }}
-        run: |
-          curl \
-            -X DELETE --fail \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ env.REPO_SETUP_TOKEN }}" \
-            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
-
+  setup-repository:
+    name: Instantiate repo template
+    uses: ./.github/workflows/cookiecutter.yml
+    with:
+      # Commit directly to the main branch, erasing the history of the template
+      branch_name: main
+      token: ${{ secrets.REPO_SETUP_TOKEN }}
