@@ -8,8 +8,6 @@ jobs:
   require-non-template:
     name: Check that the current repo is not the original template repo
     runs-on: ubuntu-latest
-    env:
-      REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
     steps:
       - name: Do not run scaffolding on template repository
         shell: bash
@@ -33,3 +31,19 @@ jobs:
       # Commit directly to the main branch, erasing the history of the template
       branch_name: main
       token: ${{ secrets.REPO_SETUP_TOKEN }}
+
+  cleanup:
+    name: Cleanup remaining secret
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove secret REPO_SETUP_TOKEN
+        # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
+        shell: bash
+        if: ${{ secrets.REPO_SETUP_TOKEN }}
+        run: |
+          curl \
+            -X DELETE --fail \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.REPO_SETUP_TOKEN }}" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
+
