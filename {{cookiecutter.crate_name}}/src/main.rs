@@ -1,12 +1,14 @@
 // disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::io::Cursor;
+
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use bevy::winit::WinitWindows;
 use bevy::DefaultPlugins;
-use std::io::Cursor;
 use winit::window::Icon;
+
 use {{ cookiecutter.crate_name | replace('-', '_') }}::GamePlugin;
 
 fn main() {
