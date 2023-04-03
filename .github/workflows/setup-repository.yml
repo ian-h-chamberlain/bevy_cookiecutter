@@ -4,6 +4,9 @@ on:
     paths:
       - cookiecutter.json
 
+env:
+  REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
+
 jobs:
   require-non-template:
     name: Check that the current repo is not the original template repo
@@ -19,8 +22,8 @@ jobs:
         # is a template repository or not.
         run: |
           curl --silent -X GET \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.baptiste-preview+json" \
+            -H 'Authorization: token ${{ env.GITHUB_TOKEN }}' \
+            -H 'Accept: application/vnd.github.baptiste-preview+json' \
             https://api.github.com/repos/$GITHUB_REPOSITORY \
             | jq --exit-status '.is_template == false';
 
@@ -30,7 +33,7 @@ jobs:
     with:
       # Commit directly to the main branch, erasing the history of the template
       branch_name: main
-      token: ${{ secrets.REPO_SETUP_TOKEN }}
+      token: ${{ env.REPO_SETUP_TOKEN }}
 
   cleanup:
     name: Cleanup remaining secret
@@ -39,11 +42,11 @@ jobs:
       - name: Remove secret REPO_SETUP_TOKEN
         # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
         shell: bash
-        if: ${{ secrets.REPO_SETUP_TOKEN }}
+        if: ${{ env.REPO_SETUP_TOKEN }}
         run: |
           curl \
             -X DELETE --fail \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.REPO_SETUP_TOKEN }}" \
+            -H 'Accept: application/vnd.github.v3+json' \
+            -H 'Authorization: token ${{ env.REPO_SETUP_TOKEN }}' \
             https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
 
