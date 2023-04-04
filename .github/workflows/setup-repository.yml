@@ -1,11 +1,9 @@
 name: Setup repository
 on:
+  workflow_dispatch:
   push:
     paths:
       - cookiecutter.json
-
-env:
-  REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
 
 jobs:
   require-non-template:
@@ -22,31 +20,36 @@ jobs:
         # is a template repository or not.
         run: |
           curl --silent -X GET \
-            -H 'Authorization: token ${{ env.GITHUB_TOKEN }}' \
-            -H 'Accept: application/vnd.github.baptiste-preview+json' \
-            https://api.github.com/repos/$GITHUB_REPOSITORY \
-            | jq --exit-status '.is_template == false';
+            -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.baptiste-preview+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
+            | jq --exit-status '.is_template | not';
 
   setup-repository:
     name: Instantiate repo template
+    needs: require-non-template
     uses: ./.github/workflows/cookiecutter.yml
     with:
       # Commit directly to the main branch, erasing the history of the template
       branch_name: main
-      token: ${{ env.REPO_SETUP_TOKEN }}
+    secrets:
+      token: ${{ secrets.REPO_SETUP_TOKEN }}
 
   cleanup:
     name: Cleanup remaining secret
+    needs: setup-repository
     runs-on: ubuntu-latest
     steps:
       - name: Remove secret REPO_SETUP_TOKEN
         # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
         shell: bash
-        if: ${{ env.REPO_SETUP_TOKEN }}
+        env:
+          REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
+        if: ${{ env.REPO_SETUP_TOKEN != '' }}
         run: |
           curl \
             -X DELETE --fail \
-            -H 'Accept: application/vnd.github.v3+json' \
-            -H 'Authorization: token ${{ env.REPO_SETUP_TOKEN }}' \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${REPO_SETUP_TOKEN}" \
             https://api.github.com/repos/$GITHUB_REPOSITORY/actions/secrets/REPO_SETUP_TOKEN
 

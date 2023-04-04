@@ -1,6 +1,6 @@
 # Copied from https://github.com/stefanbuck/instantiated-templatelate
 
-name: Setup repository
+name: Instantiate template
 on:
   workflow_call:
     inputs:
