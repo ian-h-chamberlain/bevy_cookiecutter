@@ -2,8 +2,10 @@ name: Setup repository
 on:
   workflow_dispatch:
   push:
-    paths:
-      - cookiecutter.json
+    # branches:
+    #   - main
+    # paths:
+    #   - cookiecutter.json
 
 jobs:
   require-non-template:
@@ -19,11 +21,11 @@ jobs:
         # Using the GitHub rest API allows us to identify if the current repository
         # is a template repository or not.
         run: |
-          curl --silent -X GET \
-            -H "Authorization: token ${GITHUB_TOKEN}" \
+          echo "https://api.github.com/repos/${GITHUB_REPOSITORY}" && \
+          curl --fail -X GET \
             -H "Accept: application/vnd.github.baptiste-preview+json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
-            | jq --exit-status '.is_template | not';
+            | jq --exit-status '.is_template | not'
 
   setup-repository:
     name: Instantiate repo template
