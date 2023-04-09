@@ -2,10 +2,12 @@ name: Setup repository
 on:
   workflow_dispatch:
   push:
-    # branches:
-    #   - main
-    # paths:
-    #   - cookiecutter.json
+    branches:
+      # Technically this might not work if someone used a different default branch,
+      # but let's assume that it will always be called "main"
+      - main
+    paths:
+      - cookiecutter.json
 
 jobs:
   require-non-template:

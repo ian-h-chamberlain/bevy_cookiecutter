@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.token }}
+          token: ${{ secrets.REPO_SETUP_TOKEN }}
 
       - name: Trigger CI against template branch
         uses: aurelien-baudet/workflow-dispatch@v2
