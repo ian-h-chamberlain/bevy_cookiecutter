@@ -23,11 +23,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_SETUP_TOKEN }}
 
       - name: Trigger CI against template branch
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: CI
+          workflow: ci.yml
           token: ${{ secrets.REPO_SETUP_TOKEN }}
           ref: ci/${{ github.ref_name }}
 

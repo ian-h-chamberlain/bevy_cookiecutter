@@ -13,6 +13,7 @@
     ".github/workflows/deploy-page.yml"
   ],
   "_extensions": [
-    "cookiecutter.extensions.SlugifyExtension"
+    "cookiecutter.extensions.SlugifyExtension",
+    "cookiecutter.extensions.UUIDExtension"
   ]
 }
